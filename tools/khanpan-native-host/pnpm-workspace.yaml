@@ -1,6 +1,0 @@
-# pnpm 10+ reads onlyBuiltDependencies from this file even when the project
-# isn't a workspace. CI runs `pnpm install --frozen-lockfile` and otherwise
-# blocks transitive postinstall scripts.
-onlyBuiltDependencies:
-  - "@serialport/bindings-cpp"
-  - esbuild
