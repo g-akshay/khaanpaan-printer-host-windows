@@ -1,0 +1,24 @@
+{
+  "name": "khanpan-native-host",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Khanpan Printer Connector — Chrome native messaging host. Receives ESC/POS print jobs from the Khanpan extension and forwards them to USB, network, serial and Bluetooth thermal printers.",
+  "bin": {
+    "khanpan-native-host": "./host.mjs"
+  },
+  "scripts": {
+    "start": "node host.mjs",
+    "install:host": "node install.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "postject": "1.0.0-alpha.6"
+  },
+  "dependencies": {
+    "serialport": "^13.0.0"
+  }
+}

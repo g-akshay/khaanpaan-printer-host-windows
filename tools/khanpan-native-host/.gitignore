@@ -1,0 +1,17 @@
+# Node binary download cache used by build.mjs.
+# Roughly 1500 extracted files at ~70 MB. Re-fetched on demand from
+# https://nodejs.org/dist/.
+.node-cache/
+
+# Build output (also covered by the repo-root .gitignore, but listed here
+# explicitly so an `ls -A` in this directory makes the intent obvious).
+dist/
+
+# Per-developer wrapper scripts emitted by install.mjs — they hardcode the
+# developer's local node path, which is machine-specific.
+khanpan-native-host.sh
+khanpan-native-host.bat
+
+# Scratch file the install command writes during the customer-flow smoke
+# test. Useful for debugging install failures locally; never wanted in git.
+/tmp/khanpan-install.err

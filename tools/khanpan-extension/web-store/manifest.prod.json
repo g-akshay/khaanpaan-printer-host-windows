@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Khanpan Printer Connector",
+  "version": "0.1.0",
+  "description": "Lets Khanpan POS print to USB, network, and Bluetooth thermal printers via a small local helper. Companion to https://app.khanpan.app.",
+  "author": "Khanpan",
+
+  "permissions": ["nativeMessaging"],
+
+  "host_permissions": [
+    "https://app.khanpan.app/*"
+  ],
+
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://app.khanpan.app/*"
+      ],
+      "js": ["content_script.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": [
+        "https://app.khanpan.app/*"
+      ]
+    }
+  ],
+
+  "action": {
+    "default_title": "Khanpan Printer Connector",
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

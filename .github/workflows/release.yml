@@ -1,0 +1,68 @@
+# Build + release Windows installer on tag pushes.
+#
+# Tag format: `v0.X.Y` or `printer-host-v0.X.Y`. The workflow:
+#   1. Builds the Node.js folder bundle for Windows x64.
+#   2. Compiles the Inno Setup .iss into a .exe installer.
+#   3. Uploads the .exe as a GitHub Release asset.
+#
+# Authenticode signing via SignPath Foundation will be wired in after the
+# Foundation application is approved (see signpath.org/foundation).
+
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+      - "printer-host-v*"
+
+permissions:
+  contents: write # needed to upload Release assets
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Install build deps
+        shell: bash
+        working-directory: tools/khanpan-native-host
+        run: pnpm install --frozen-lockfile
+
+      - name: Build folder bundle
+        shell: bash
+        working-directory: tools/khanpan-native-host
+        run: node build.mjs --target=windows
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Compile .exe installer
+        shell: cmd
+        working-directory: tools/khanpan-native-host
+        run: iscc installer-windows\khanpan-printer-host.iss
+
+      # When SignPath Foundation approves the project, uncomment and configure
+      # the signing step. See https://about.signpath.io/documentation/build-system-integration/github
+      # - name: Sign .exe via SignPath
+      #   uses: signpath/github-action-submit-signing-request@v1
+      #   with:
+      #     api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #     organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+      #     project-slug: khanpan-printer-host
+      #     signing-policy-slug: release-signing
+      #     artifact-configuration-slug: installer
+      #     github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+      #     wait-for-completion: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: tools/khanpan-native-host/dist/Khanpan-Printer-Host-Setup-*.exe

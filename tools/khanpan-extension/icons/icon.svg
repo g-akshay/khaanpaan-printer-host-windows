@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!--
+    Khanpan Printer Connector — extension toolbar icon.
+
+    Design: rounded-square "K" monogram in white on the Khanpan accent
+    background (#5B5BFE — the indigo used in apps/pos's design tokens).
+    A small printer-feed bar at the bottom hints at the printing function.
+
+    Read at 16×16: the K is bold enough; the feed-bar reads as a colour
+    accent rather than detail. Replace with finalised brand artwork when
+    Khanpan's visual identity is locked.
+  -->
+  <rect width="128" height="128" rx="24" fill="#5B5BFE"/>
+
+  <!-- K monogram, geometric -->
+  <path
+    d="M 38 30
+       L 38 98
+       M 38 64
+       L 78 30
+       M 50 64
+       L 82 98"
+    stroke="#FFFFFF"
+    stroke-width="12"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- Printer-feed bar (a small bar of paper exiting at the bottom) -->
+  <rect x="32" y="106" width="64" height="8" rx="4" fill="#FFFFFF" opacity="0.75"/>
+</svg>

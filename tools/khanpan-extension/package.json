@@ -1,0 +1,14 @@
+{
+  "name": "khanpan-printer-connector-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome extension that lets Khanpan POS print to USB / network / Bluetooth thermal printers. Built as a Manifest v3 extension with a native messaging companion.",
+  "scripts": {
+    "build:icons": "node build-icons.mjs",
+    "build:store": "node web-store/build.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
+}
