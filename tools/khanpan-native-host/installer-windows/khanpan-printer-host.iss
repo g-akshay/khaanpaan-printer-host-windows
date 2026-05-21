@@ -14,6 +14,67 @@
 ;        iscc tools/khanpan-native-host/installer-windows/khanpan-printer-host.iss
 ;   3. Output lands at: tools/khanpan-native-host/dist/Khanpan-Printer-Host-Setup-<version>.exe
 ;
+#define MyAppName "Khanpan Printer Connector"
+#define MyAppVersion "0.1.0"
+#define MyAppPublisher "Khanpan"
+#define MyAppURL "https://khanpan.app"
+#define MyAppExeName "khanpan-printer-host.bat"
+#define MyBundleDir "..\dist\windows\Khanpan-Printer-Host"
+
+[Setup]
+; Stable AppId — never change this for shipped versions; uninstall keys are
+; matched against it. Generate with `[OnlineGenerateGuid]` in the Inno Setup
+; IDE if you ever fork this for a different product.
+AppId={{B6F0F8C1-2D31-4F1A-9E16-7D8BDF7C9F0A}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+AppPublisher={#MyAppPublisher}
+AppPublisherURL={#MyAppURL}
+AppSupportURL={#MyAppURL}/support
+AppUpdatesURL={#MyAppURL}/downloads
+
+; Per-user install — no admin prompt, can run on locked-down cashier PCs.
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog
+
+DefaultDirName={localappdata}\Programs\Khanpan-Printer-Host
+DefaultGroupName={#MyAppName}
+DisableProgramGroupPage=yes
+
+; Installer .exe metadata
+OutputDir=..\dist
+OutputBaseFilename=Khanpan-Printer-Host-Setup-{#MyAppVersion}
+Compression=lzma2/ultra64
+SolidCompression=yes
+WizardStyle=modern
+
+; SmartScreen won't be happy with an unsigned installer on first run. Once we
+; have an Authenticode code-signing cert, uncomment and point at it:
+;   SignTool=signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $f
+
+; Show a friendly "we're installing this for one user" page
+UsedUserAreasWarning=no
+UninstallDisplayName={#MyAppName}
+UninstallDisplayIcon={app}\node.exe
+
+[Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Files]
+; Bundle contents. The MyBundleDir define is relative to the .iss file's
+; location, so this picks up whatever `node build.mjs --target=windows` last
+; produced. Re-build the bundle first if you change host.mjs.
+Source: "{#MyBundleDir}\node.exe";              DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyBundleDir}\host.bundle.cjs";       DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyBundleDir}\khanpan-printer-host.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyBundleDir}\Install Khanpan Printer.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyBundleDir}\README.txt";            DestDir: "{app}"; Flags: ignoreversion
+
+[Run]
+; Postinstall: register the native host with Chrome. Runs as the installing
+; user (no elevation needed) and inherits their environment so Chrome's
+; per-user Secure Preferences are reachable for auto-detect.
+;
 ; The 'install' subcommand exits 0 even if auto-detect fails (no extension
 ; loaded yet). We never want a failed registration to abort the .exe
 ; installer — the customer can re-run "Install Khanpan Printer.bat" later
