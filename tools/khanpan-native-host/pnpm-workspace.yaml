@@ -1,0 +1,12 @@
+# Declares this directory as a one-package pnpm workspace so pnpm v10+ reads
+# the settings below. Without `packages:`, v9 errors with "packages field
+# missing or empty"; without the file entirely, v10+ ignores the build-script
+# allowlist and CI fails with ERR_PNPM_IGNORED_BUILDS.
+packages:
+  - "."
+
+# Allow these transitive deps to run their install scripts. serialport needs
+# its native bindings built; esbuild needs its platform binary downloaded.
+onlyBuiltDependencies:
+  - "@serialport/bindings-cpp"
+  - esbuild
