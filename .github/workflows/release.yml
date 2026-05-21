@@ -30,7 +30,12 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 11
+          # Pinned to v9: v10+ blocks transitive postinstall scripts by default
+          # (serialport's native bindings, esbuild's binary) and our standalone
+          # native-host directory isn't a real pnpm workspace, so its
+          # pnpm-workspace.yaml settings get ignored. v9 just installs and runs
+          # the scripts the same way npm does.
+          version: 9
 
       - name: Install build deps
         shell: bash
