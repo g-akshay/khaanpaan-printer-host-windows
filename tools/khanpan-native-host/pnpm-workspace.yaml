@@ -5,8 +5,9 @@
 packages:
   - "."
 
-# Allow these transitive deps to run their install scripts. serialport needs
-# its native bindings built; esbuild needs its platform binary downloaded.
-onlyBuiltDependencies:
-  - "@serialport/bindings-cpp"
-  - esbuild
+# pnpm v11+ uses `allowBuilds` (not `onlyBuiltDependencies`) — explicit per-
+# package true/false. serialport needs its native bindings built; esbuild
+# needs its platform binary downloaded.
+allowBuilds:
+  "@serialport/bindings-cpp": true
+  esbuild: true
