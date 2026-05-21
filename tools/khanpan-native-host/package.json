@@ -20,5 +20,11 @@
   },
   "dependencies": {
     "serialport": "^13.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@serialport/bindings-cpp",
+      "esbuild"
+    ]
   }
 }
